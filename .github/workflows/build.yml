@@ -159,6 +159,22 @@ jobs:
         APPLE_TEAMID: ${{ secrets.APPLE_TEAMID }}
         CERTIFICATE_MACOS_P12_BASE64: ${{ secrets.CERTIFICATE_MACOS_P12_BASE64 }}
         CERTIFICATE_MACOS_P12_PASSWORD: ${{ secrets.CERTIFICATE_MACOS_P12_PASSWORD }}
+    
+    - name: Package AppImage
+      if: startsWith(runner.os, 'ubuntu')
+      run: |
+        echo xxxxxxx
+        ls
+        echo xxxxxxx
+        unzip activitywatch-v0.11.0-linux-x86_64.zip
+        cd activitywatch
+        wget https://raw.githubusercontent.com/guysoft/activitywatch/appimage/AppRun
+        chmod 755 AppRun
+        cp ./aw-server/aw_server/static/static/logo.png ./activitywatch.png
+        wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+        chmod 755 appimagetool-x86_64.AppImage
+        ./appimagetool-x86_64.AppImage activitywatch
+
 
     - name: Upload packages
       uses: actions/upload-artifact@v2-preview
